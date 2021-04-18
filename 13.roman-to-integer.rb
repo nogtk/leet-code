@@ -8,53 +8,24 @@
 # @param {String} s
 # @return {Integer}
 def roman_to_int(s)
-  x = s.split('')
-  ans = 0
-  index = 0
-  while index < x.size
-    one_flag = false
-    num = if x[index] == 'I' && x[index+1] == 'V'
-      4
-    elsif x[index] == 'I' && x[index+1] == 'X'
-      9
-    elsif x[index] == 'X' && x[index+1] == 'L'
-      40
-    elsif x[index] == 'X' && x[index+1] == 'C'
-      90
-    elsif x[index] == 'C' && x[index+1] == 'D'
-      400
-    elsif x[index] == 'C' && x[index+1] == 'M'
-      900
-    else
-      one_flag = true
-      roman_str(x[index])
-    end
+  roman_hash = {
+    'I' => 1,
+    'V' => 5,
+    'X' => 10,
+    'L' => 50,
+    'C' => 100,
+    'D' => 500,
+    'M' => 1000,
+  }
 
-    ans += num
-
-    one_flag ? index+=1 : index+=2
+  s = s.split('')
+  i = s.size-1
+  ans = roman_hash[s[i]]
+  (i-1).downto(0) do |j|
+    roman_hash[s[j]] < roman_hash[s[j+1]] ? ans -= roman_hash[s[j]] : ans += roman_hash[s[j]]
   end
 
   ans
-end
-
-def roman_str(s)
-  case s
-  when 'I'
-    1
-  when 'V'
-    5
-  when 'X'
-    10
-  when 'L'
-    50
-  when 'C'
-    100
-  when 'D'
-    500
-  when 'M'
-    1000
-  end
 end
 # @lc code=end
 
