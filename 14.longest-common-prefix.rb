@@ -8,15 +8,27 @@
 # @param {String[]} strs
 # @return {String}
 def longest_common_prefix(strs)
-  first_str = strs.first
-  return '' unless first_str
-  remain_strs = strs[1..strs.size-1]
-  prefix_length = 0
-  first_str.split('').each_with_index do |s, i|
-    remain_strs.all? { |r_s| s == r_s[i] } ? prefix_length+=1 : break
+  return '' if strs.empty?
+  longest_prefix(strs, 0, strs.size - 1)
+end
+
+def longest_prefix(strs, l, r)
+  return strs[l] if l == r
+  mid = (l + r)/2
+  left = longest_prefix(strs, l, mid)
+  right = longest_prefix(strs, mid + 1, r)
+  calc_longest_value(left, right)
+end
+
+def calc_longest_value(left, right)
+  min = left.size > right.size ? right.size : left.size
+  for i in 0...min do
+    if left[i] != right[i]
+      return i == 0 ? '' : left[0...i]
+    end
   end
 
-  prefix_length.zero? ? '' : first_str[0...prefix_length]
+  left[0...min]
 end
 # @lc code=end
 
